@@ -1,41 +1,27 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.openr66.r66gui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import com.swtdesigner.FocusTraversalOnArray;
+import org.waarp.common.logging.WaarpLogger;
+import org.waarp.common.logging.WaarpLoggerFactory;
+import org.waarp.common.logging.WaarpSlf4JLoggerFactory;
+import org.waarp.openr66.protocol.configuration.Configuration;
+import org.waarp.openr66.protocol.configuration.Messages;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -55,32 +41,39 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
-
-import org.waarp.common.logging.WaarpLogger;
-import org.waarp.common.logging.WaarpLoggerFactory;
-import org.waarp.common.logging.WaarpSlf4JLoggerFactory;
-import org.waarp.openr66.protocol.configuration.Configuration;
-import org.waarp.openr66.protocol.configuration.Messages;
-
-import com.swtdesigner.FocusTraversalOnArray;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 /**
  * R66 Client GUI to show how to use the API and also to enable to test the connectivity to R66 servers
  * and the validity of a transfer through a rule.
- * 
+ *
  * @author Frederic Bregier
  *
  */
 public class R66ClientGui {
+    public static R66ClientGui window;
+    static String[] static_args;
     /**
      * Internal Logger
      */
     private static WaarpLogger logger = null;
-
-    static String[] static_args;
-    public static R66ClientGui window;
-
     public JFrame frmRClientGui;
+    protected boolean extended = false;
     private JTextField textFieldInformation;
     private JTextField textFieldFile;
     private R66Environment environnement = new R66Environment();
@@ -98,7 +91,28 @@ public class R66ClientGui {
     private JScrollPane scrollPane;
     private JScrollPane scrollPane_1;
     private JCheckBox checkBoxDebug;
-    protected boolean extended = false;
+
+    /**
+     * Used by extended class
+     */
+    protected R66ClientGui() {
+        if (logger == null) {
+            logger = WaarpLoggerFactory.getLogger(R66ClientGui.class);
+            environnement.initLog();
+        }
+    }
+
+    /**
+     * Create the application.
+     */
+    public R66ClientGui(String[] args) {
+        if (logger == null) {
+            logger = WaarpLoggerFactory.getLogger(R66ClientGui.class);
+            environnement.initLog();
+        }
+        environnement.initialize(args);
+        initialize();
+    }
 
     /**
      * Launch the application.
@@ -121,30 +135,8 @@ public class R66ClientGui {
         });
     }
 
-    /**
-     * Used by extended class
-     */
-    protected R66ClientGui() {
-        if (logger == null) {
-            logger = WaarpLoggerFactory.getLogger(R66ClientGui.class);
-            environnement.initLog();
-        }
-    }
-
     public R66Environment getEnvironment() {
         return environnement;
-    }
-
-    /**
-     * Create the application.
-     */
-    public R66ClientGui(String[] args) {
-        if (logger == null) {
-            logger = WaarpLoggerFactory.getLogger(R66ClientGui.class);
-            environnement.initLog();
-        }
-        environnement.initialize(args);
-        initialize();
     }
 
     /**
@@ -413,50 +405,10 @@ public class R66ClientGui {
 
         System.setOut(new PrintStream(new JTextAreaOutputStream(textPaneLog)));
         frmRClientGui.getContentPane().setFocusTraversalPolicy(
-                new FocusTraversalOnArray(new Component[] { buttonCheckConnection, comboBoxHosts, comboBoxRules,
-                        checkBoxMD5, textFieldInformation, textFieldFile, buttonFileFind, buttonTransferStart }));
-    }
-
-    /**
-     * @author Frederic Bregier
-     *
-     */
-    public class R66ClientGuiActions extends SwingWorker<String, Integer> {
-        static final int CHECKCONNECTION = 1;
-        static final int STARTTRANSFER = 2;
-        static final int FILESELECT = 3;
-        int method;
-
-        R66ClientGuiActions(int method) {
-            this.method = method;
-        }
-
-        @Override
-        protected String doInBackground() throws Exception {
-            disableAllButtons();
-            startRequest();
-            switch (method) {
-                case CHECKCONNECTION:
-                    checkConnection();
-                    break;
-                case STARTTRANSFER:
-                    startTransfer();
-                    break;
-                case FILESELECT:
-                    findFile();
-                    break;
-                default:
-                    environnement.GuiResultat = Messages.getString("R66ClientGui.24"); //$NON-NLS-1$
-            }
-            setStatus(environnement.GuiResultat);
-            if (method != FILESELECT) {
-                showDialog();
-            } else {
-                enableAllButtons();
-            }
-            stopRequest();
-            return environnement.GuiResultat;
-        }
+                new FocusTraversalOnArray(new Component[] {
+                        buttonCheckConnection, comboBoxHosts, comboBoxRules,
+                        checkBoxMD5, textFieldInformation, textFieldFile, buttonFileFind, buttonTransferStart
+                }));
     }
 
     private void showDialog() {
@@ -552,8 +504,10 @@ public class R66ClientGui {
             environnement.startsTransfer(progressBarTransfer, textFieldStatus);
         } else {
             environnement.GuiResultat = Messages.getString("R66ClientGui.34") + //$NON-NLS-1$
-                    Messages.getString("R66ClientGui.35") + environnement.hostId + Messages.getString("R66ClientGui.36") + environnement.ruleId + //$NON-NLS-1$ //$NON-NLS-2$
-                    Messages.getString("R66ClientGui.37") + environnement.filePath; //$NON-NLS-1$
+                                        Messages.getString("R66ClientGui.35") + environnement.hostId +
+                                        Messages.getString("R66ClientGui.36") + environnement.ruleId +
+                                        //$NON-NLS-1$ //$NON-NLS-2$
+                                        Messages.getString("R66ClientGui.37") + environnement.filePath; //$NON-NLS-1$
         }
         setStatus(environnement.GuiResultat);
         showDialog();
@@ -644,5 +598,47 @@ public class R66ClientGui {
             ta.append(s);
         }
 
+    }
+
+    /**
+     * @author Frederic Bregier
+     *
+     */
+    public class R66ClientGuiActions extends SwingWorker<String, Integer> {
+        static final int CHECKCONNECTION = 1;
+        static final int STARTTRANSFER = 2;
+        static final int FILESELECT = 3;
+        int method;
+
+        R66ClientGuiActions(int method) {
+            this.method = method;
+        }
+
+        @Override
+        protected String doInBackground() throws Exception {
+            disableAllButtons();
+            startRequest();
+            switch (method) {
+            case CHECKCONNECTION:
+                checkConnection();
+                break;
+            case STARTTRANSFER:
+                startTransfer();
+                break;
+            case FILESELECT:
+                findFile();
+                break;
+            default:
+                environnement.GuiResultat = Messages.getString("R66ClientGui.24"); //$NON-NLS-1$
+            }
+            setStatus(environnement.GuiResultat);
+            if (method != FILESELECT) {
+                showDialog();
+            } else {
+                enableAllButtons();
+            }
+            stopRequest();
+            return environnement.GuiResultat;
+        }
     }
 }

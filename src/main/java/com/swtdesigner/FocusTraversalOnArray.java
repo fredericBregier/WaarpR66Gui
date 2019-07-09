@@ -6,10 +6,10 @@ import java.awt.FocusTraversalPolicy;
 
 /**
  * Cyclic focus traversal policy based on array of components.
- * 
+ * <p>
  * This class may be freely distributed as part of any application or plugin.
  * <p>
- * 
+ *
  * @author scheglov_ke
  */
 public class FocusTraversalOnArray extends FocusTraversalPolicy {
@@ -37,7 +37,8 @@ public class FocusTraversalOnArray extends FocusTraversalPolicy {
 
     private Component cycle(Component currentComponent, int delta) {
         int index = -1;
-        loop: for (int i = 0; i < m_Components.length; i++) {
+        loop:
+        for (int i = 0; i < m_Components.length; i++) {
             Component component = m_Components[i];
             for (Component c = currentComponent; c != null; c = c.getParent()) {
                 if (component == c) {

@@ -1,6 +1,9 @@
 // DO NOT MODIFY - WILL BE OVERWRITTEN DURING THE BUILD PROCESS
 package org.waarp.openr66.r66gui;
-/** Provides the version information of Waarp R66 Gui. */
+
+/**
+ * Provides the version information of Waarp R66 Gui.
+ */
 public final class Version {
  /** The version identifier. */
  public static final String ID = "3.0.4";

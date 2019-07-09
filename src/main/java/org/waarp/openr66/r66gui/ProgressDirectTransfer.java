@@ -1,31 +1,27 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.openr66.r66gui;
-
-import javax.swing.JEditorPane;
-import javax.swing.JProgressBar;
 
 import org.waarp.openr66.client.ProgressBarTransfer;
 import org.waarp.openr66.protocol.networkhandler.NetworkTransaction;
 import org.waarp.openr66.protocol.utils.R66Future;
+
+import javax.swing.JEditorPane;
+import javax.swing.JProgressBar;
 
 /**
  * @author Frederic Bregier
@@ -52,11 +48,11 @@ public class ProgressDirectTransfer extends ProgressBarTransfer {
      * @param callbackdelay
      */
     public ProgressDirectTransfer(R66Future future, String remoteHost,
-            String filename, String rulename, String fileinfo, boolean isMD5,
-            int blocksize, long id, NetworkTransaction networkTransaction,
-            long callbackdelay, JProgressBar progressBar, JEditorPane textFieldStatus) {
+                                  String filename, String rulename, String fileinfo, boolean isMD5,
+                                  int blocksize, long id, NetworkTransaction networkTransaction,
+                                  long callbackdelay, JProgressBar progressBar, JEditorPane textFieldStatus) {
         super(future, remoteHost, filename, rulename, fileinfo, isMD5,
-                blocksize, id, networkTransaction, callbackdelay);
+              blocksize, id, networkTransaction, callbackdelay);
         this.textFieldStatus = textFieldStatus;
         this.progressBar = progressBar;
         this.progressBar.setIndeterminate(true);
@@ -80,11 +76,11 @@ public class ProgressDirectTransfer extends ProgressBarTransfer {
         long speedKB = sendsize / time;
         if (filesize == 0) {
             this.textFieldStatus.setText("Bytes transmitted: " + (currentBlock * blocksize) + " at " + speedKB
-                    + " KB/s");
+                                         + " KB/s");
         } else {
             this.progressBar.setValue(currentBlock * 100 / nbBlock);
             this.textFieldStatus.setText("Bytes transmitted: " + (currentBlock * blocksize) +
-                    " on " + filesize + " at " + speedKB + " KB/s");
+                                         " on " + filesize + " at " + speedKB + " KB/s");
         }
         lastTime = newtime - 1;
         lastRank = currentBlock;
@@ -95,11 +91,11 @@ public class ProgressDirectTransfer extends ProgressBarTransfer {
         this.progressBar.setIndeterminate(false);
         if (filesize == 0) {
             this.textFieldStatus.setText("Finally Bytes transmitted: " + (currentBlock * blocksize) + " with Status: "
-                    + success);
+                                         + success);
         } else {
             this.progressBar.setValue(100);
             this.textFieldStatus.setText("Finally Bytes transmitted: " + (currentBlock * blocksize) + " with Status: "
-                    + success);
+                                         + success);
         }
     }
 }
