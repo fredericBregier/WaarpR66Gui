@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.waarp.common.database.DbSession;
 import org.waarp.common.database.exception.WaarpDatabaseException;
 import org.waarp.common.database.exception.WaarpDatabaseNoConnectionException;
-import org.waarp.common.database.exception.WaarpDatabaseSqlException;
 import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.logging.WaarpSlf4JLoggerFactory;
@@ -46,7 +45,6 @@ import javax.swing.JProgressBar;
 
 /**
  * @author Frederic Bregier
- *
  */
 public class R66Environment {
     /**
@@ -69,12 +67,8 @@ public class R66Environment {
         DbHostAuth[] dbHostAuths;
         DbSession session = DbConstant.admin != null? DbConstant.admin.getSession() : null;
         try {
-            dbHostAuths = DbHostAuth.getAllHosts(session);
+            dbHostAuths = DbHostAuth.getAllHosts();
         } catch (WaarpDatabaseNoConnectionException e) {
-            results = new String[1];
-            results[0] = Messages.getString("R66Environment.31"); //$NON-NLS-1$
-            return results;
-        } catch (WaarpDatabaseSqlException e) {
             results = new String[1];
             results[0] = Messages.getString("R66Environment.31"); //$NON-NLS-1$
             return results;
@@ -96,12 +90,8 @@ public class R66Environment {
         DbRule[] dbRules;
         DbSession session = DbConstant.admin != null? DbConstant.admin.getSession() : null;
         try {
-            dbRules = DbRule.getAllRules(session);
+            dbRules = DbRule.getAllRules();
         } catch (WaarpDatabaseNoConnectionException e) {
-            results = new String[1];
-            results[0] = Messages.getString("R66Environment.34"); //$NON-NLS-1$
-            return results;
-        } catch (WaarpDatabaseSqlException e) {
             results = new String[1];
             results[0] = Messages.getString("R66Environment.34"); //$NON-NLS-1$
             return results;
@@ -123,12 +113,8 @@ public class R66Environment {
         DbRule[] dbRules;
         DbSession session = DbConstant.admin != null? DbConstant.admin.getSession() : null;
         try {
-            dbRules = DbRule.getAllRules(session);
+            dbRules = DbRule.getAllRules();
         } catch (WaarpDatabaseNoConnectionException e) {
-            results = new String[1];
-            results[0] = Messages.getString("R66Environment.34"); //$NON-NLS-1$
-            return results;
-        } catch (WaarpDatabaseSqlException e) {
             results = new String[1];
             results[0] = Messages.getString("R66Environment.34"); //$NON-NLS-1$
             return results;
@@ -172,7 +158,7 @@ public class R66Environment {
         DbHostAuth host = null;
         DbSession session = DbConstant.admin != null? DbConstant.admin.getSession() : null;
         try {
-            host = new DbHostAuth(session, id);
+            host = new DbHostAuth(id);
         } catch (WaarpDatabaseException e) {
         }
         if (host != null) {
@@ -209,7 +195,7 @@ public class R66Environment {
         DbRule rule = null;
         DbSession session = DbConstant.admin != null? DbConstant.admin.getSession() : null;
         try {
-            rule = new DbRule(session, id);
+            rule = new DbRule(id);
         } catch (WaarpDatabaseException e) {
         }
         if (rule != null) {

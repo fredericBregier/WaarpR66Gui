@@ -59,11 +59,10 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 /**
- * R66 Client GUI to show how to use the API and also to enable to test the connectivity to R66 servers
- * and the validity of a transfer through a rule.
+ * R66 Client GUI to show how to use the API and also to enable to test the connectivity to R66 servers and the validity
+ * of a transfer through a rule.
  *
  * @author Frederic Bregier
- *
  */
 public class R66ClientGui {
     public static R66ClientGui window;
@@ -602,7 +601,6 @@ public class R66ClientGui {
 
     /**
      * @author Frederic Bregier
-     *
      */
     public class R66ClientGuiActions extends SwingWorker<String, Integer> {
         static final int CHECKCONNECTION = 1;

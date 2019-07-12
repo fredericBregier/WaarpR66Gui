@@ -25,7 +25,6 @@ import javax.swing.JProgressBar;
 
 /**
  * @author Frederic Bregier
- *
  */
 public class ProgressDirectTransfer extends ProgressBarTransfer {
     private JProgressBar progressBar;
