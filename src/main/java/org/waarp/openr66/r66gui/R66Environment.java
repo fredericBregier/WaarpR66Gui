@@ -28,6 +28,7 @@ import org.waarp.common.database.exception.WaarpDatabaseNoConnectionException;
 import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.logging.WaarpSlf4JLoggerFactory;
+import org.waarp.common.utility.DetectionUtils;
 import org.waarp.openr66.client.Message;
 import org.waarp.openr66.configuration.FileBasedConfiguration;
 import org.waarp.openr66.context.ErrorCode;
@@ -277,7 +278,7 @@ public class R66Environment {
       networkTransaction.closeAll();
       networkTransaction = null;
     }
-    //System.exit(0);
+    //DetectionUtils.SystemExit(0);
   }
 
   public void debug(boolean isDebug) {

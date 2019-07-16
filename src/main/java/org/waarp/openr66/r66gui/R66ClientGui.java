@@ -23,6 +23,7 @@ import com.swtdesigner.FocusTraversalOnArray;
 import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.logging.WaarpSlf4JLoggerFactory;
+import org.waarp.common.utility.DetectionUtils;
 import org.waarp.openr66.protocol.configuration.Configuration;
 import org.waarp.openr66.protocol.configuration.Messages;
 
